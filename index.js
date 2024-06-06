@@ -2,32 +2,25 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const json = require("json")
 const mongoose = require("mongoose")
-const order = require("./Module/Order")
-mongoose.connect("mongodb://localhost/webhooks").then(()=>{
+const Order = require("./Module/Order")
+mongoose.connect("mongodb+srv://widers:Ab6432987@sala-app2.jls5rsb.mongodb.net/webhoke").then(()=>{
     console.log("connction is scssfoyl")
     }).catch(()=>{
         console.log("game over try again")
 })
-const dataschema = mongoose.Schema({
-
-})
-const datas = mongoose.model("data",dataschema)
 
 const app = express();
-
+const cors = require("cors")
+app.use(cors({origin:"*"}))
 app.use(bodyParser.json());
 app.use(express.json())
 
-app.post('/webhook',async (req, res) => {
-    
-    console.log('Received Webhook:', req.body);
+app.get("/getorder",async(req,res) =>{
+    const orders = await Order.find()
+    res.status(200).json(orders)
+})
 
-    // const data = new datas(
-    //     req.body
-    // )
-    // const resulat=  await data.save()
-    
-    // res.status(200).send(resulat);
+app.post('/webhook',async (req, res) => {
     const orderr = new order({
         id : req.body.id,
         cart_reference_id: req.body.cart_reference_id,
@@ -70,7 +63,7 @@ app.post('/webhook',async (req, res) => {
 });
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = 1099|| 3000;
 
 app.listen(PORT, () => {
     console.log(`Webhook receiver listening on port ${PORT}`);
