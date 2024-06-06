@@ -1,4 +1,4 @@
-const joi = require("joi")
+
 const mongoose = require("mongoose")
 
 const orderschema = mongoose.Schema(
@@ -112,5 +112,5 @@ const orderschema = mongoose.Schema(
         }
     }
 )
-const order = mongoose.model("order",orderschema)
-module.exports = order
+const Order = mongoose.model("order",orderschema)
+module.exports = Order
